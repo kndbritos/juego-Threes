@@ -22,43 +22,6 @@ public class Tablero {
 
 	    return false;
 	}
-	
-	public void moverIzquierda() {
-		  for (int fila = 0; fila < 4; fila++) {
-		        for (int columna = 0; columna < 4; columna++) {
-
-		            if (hayFicha(fila, columna) && columna > 0) {
-		            	
-		            	if (estaVacia(fila, columna - 1)) {
-		            	    fichas[fila][columna - 1] = fichas[fila][columna];
-		            	    fichas[fila][columna] = null; 
-		            	}
-		            	else if(fichas[fila][columna].puedeCombinarCon(fichas[fila][columna - 1])) {
-		            		 fichas[fila][columna - 1] = fichas[fila][columna].resultadoCombinacion(fichas[fila][columna - 1]);
-		            		 fichas[fila][columna] = null;
-		            	}	
-		            }
-		        }
-		  }
-	}
-	
-	public void moverDerecha() {
-		for(int fila = 0; fila < 4; fila++) {
-			for (int columna = 3; columna >= 0; columna--) {
-				
-				if (hayFicha(fila, columna) && columna < 3) {
-					
-					if(estaVacia(fila, columna + 1)) {
-					    fichas[fila][columna + 1] = fichas[fila][columna];
-					    fichas[fila][columna] = null;
-					}else if(fichas[fila][columna].puedeCombinarCon(fichas[fila][columna + 1])) {
-						fichas[fila][columna+1]=fichas[fila][columna].resultadoCombinacion(fichas[fila][columna + 1]);
-						fichas[fila][columna] = null;
-					}
-				}
-			}
-		}
-	}
 	public boolean mover(Direccion direccion) {
 	    boolean huboMovimiento = false;
 	    int desplazamientoFila = direccion.getDireccionFila();
@@ -126,6 +89,43 @@ public class Tablero {
 	        return false;
 	    }
 	    return true;
+	}
+	public boolean estaLleno() {
+		for (int fila = 0; fila < fichas.length; fila++) {
+	        for (int columna = 0; columna < fichas[fila].length; columna++) {
+	            if (!hayFicha(fila, columna)) {
+	                return false;
+	            }
+	        }
+	    }
+	    return true;
+	}
+	public boolean hayMovimientos() {
+		if(!estaLleno()) {
+			return true;
+		}
+		boolean movimiento=false;
+		for (int fila = 0; fila < fichas.length; fila++) {
+	        for (int columna = 0; columna < fichas[fila].length; columna++) {
+	        	movimiento|=fichaTieneCombinaciones(fila,columna);
+	        }
+	    }
+		return movimiento;
+	}
+	public boolean fichaTieneCombinaciones(int fila,int columna) {
+		if(esPosicionValida(fila+1,columna) && fichas[fila][columna].puedeCombinarCon(fichas[fila+1][columna])) {
+			return true;
+		}
+		if(esPosicionValida(fila-1,columna) && fichas[fila][columna].puedeCombinarCon(fichas[fila-1][columna])) {
+			return true;
+		}
+		if(esPosicionValida(fila,columna+1) && fichas[fila][columna].puedeCombinarCon(fichas[fila][columna+1])) {
+			return true;
+		}
+		if(esPosicionValida(fila,columna-1) && fichas[fila][columna].puedeCombinarCon(fichas[fila][columna-1])) {
+			return true;
+		}
+		return false;
 	}
 	
 	
