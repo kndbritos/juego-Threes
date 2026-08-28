@@ -18,7 +18,7 @@ public class Ficha {
 			    return true;
 		}
 		
-		if(valor==otra.getValor() || valor%3 == 0) {
+		if(valor==otra.getValor() && valor%3 == 0) {
 			return true;
 		}
 	

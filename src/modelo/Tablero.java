@@ -131,15 +131,3 @@ public class Tablero {
 	
 }
 
-
-
-/*
-if (fila > 0 && estaVacia(fila - 1, columna)) {
-
-    fichas[fila - 1][columna] = fichas[fila][columna];
-    fichas[fila][columna] = null;
-}
-if (fila < 3 && estaVacia(fila + 1, columna)) {
-    fichas[fila + 1][columna] = fichas[fila][columna];
-    fichas[fila][columna] = null;
-}*/
