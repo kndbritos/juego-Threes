@@ -128,6 +128,16 @@ public class Tablero {
 		return false;
 	}
 	
+	public void colocarFicha(int fila, int columna, Ficha ficha) {
+		if(esPosicionValida(fila, columna) && estaVacia(fila, columna)) {
+			fichas[fila][columna] = ficha;
+		}
+	}
+	
+	public Ficha getFicha(int fila,int columna) {
+		return fichas[fila][columna];
+	}
+	
 	
 }
 
