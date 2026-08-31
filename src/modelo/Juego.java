@@ -14,4 +14,10 @@ public class Juego {
 		tablero.colocarFicha(1, 1, generadorFichas.tomarYGenerarSiguiente());
 		tablero.colocarFicha(2, 1, generadorFichas.tomarYGenerarSiguiente());
 	}
+	public void actualizarPuntaje() {
+		puntaje=tablero.calcularPuntaje();
+	}
+	public int getPuntaje() {
+		return puntaje;
+	}
 }

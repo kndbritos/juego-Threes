@@ -31,4 +31,10 @@ public class Ficha {
 		}
 		return null;
 	}
+	public int obtenerPuntaje() {
+	    if (valor<3){
+	        return 0;
+	    }
+	    return valor;
+	}
 }

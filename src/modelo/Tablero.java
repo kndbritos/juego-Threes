@@ -137,6 +137,17 @@ public class Tablero {
 	public Ficha getFicha(int fila,int columna) {
 		return fichas[fila][columna];
 	}
+	public int calcularPuntaje() {
+	    int total = 0;
+	    for (int fila = 0; fila < fichas.length; fila++) {
+	        for (int columna = 0; columna < fichas[fila].length; columna++) {
+	            if (hayFicha(fila, columna)) {
+	                total += fichas[fila][columna].obtenerPuntaje();
+	            }
+	        }
+	    }
+	    return total;
+	}
 	
 	
 }
