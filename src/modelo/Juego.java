@@ -20,4 +20,13 @@ public class Juego {
 	public int getPuntaje() {
 		return puntaje;
 	}
+	
+	public boolean getEstado() {
+		return tablero.hayMovimientos();
+	}
+	
+	public Ficha getProximaFicha() {
+		return generadorFichas.getProximaFicha();
+	}
+	
 }
