@@ -112,7 +112,7 @@ public class Tablero {
 	    }
 		return movimiento;
 	}
-	public boolean fichaTieneCombinaciones(int fila,int columna) {
+	private boolean fichaTieneCombinaciones(int fila,int columna) {
 		if(esPosicionValida(fila+1,columna) && fichas[fila][columna].puedeCombinarCon(fichas[fila+1][columna])) {
 			return true;
 		}
