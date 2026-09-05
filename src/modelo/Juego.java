@@ -74,5 +74,4 @@ public class Juego {
 	public Ficha getProximaFicha() {
 		return generadorFichas.getProximaFicha();
 	}
-	
 }

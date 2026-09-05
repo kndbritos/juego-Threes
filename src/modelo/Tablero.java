@@ -148,7 +148,5 @@ public class Tablero {
 	    }
 	    return total;
 	}
-	
-	
 }
 
