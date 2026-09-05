@@ -35,6 +35,13 @@ public class Ficha {
 	    if (valor<3){
 	        return 0;
 	    }
-	    return valor;
+	    int valorFicha = 3;
+	    int puntos = 3;
+	    
+	    while(valorFicha < valor) {
+	    	valorFicha *= 2;
+	    	puntos *= 3;
+	    }
+	    return puntos;
 	}
 }
