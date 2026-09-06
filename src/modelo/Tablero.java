@@ -148,5 +148,28 @@ public class Tablero {
 	    }
 	    return total;
 	}
+	public Tablero copia() {
+	    Tablero copia = new Tablero();
+	    for (int fila = 0; fila < 4; fila++) {
+	        for (int columna = 0; columna < 4; columna++) {
+	            copia.fichas[fila][columna] = this.fichas[fila][columna];
+	        }
+	    }
+	    return copia;
+	}
+
+	public int contarCeldasVacias() {
+	    int total = 0;
+	    for (int fila = 0; fila < 4; fila++) {
+	        for (int columna = 0; columna < 4; columna++) {
+	            if (estaVacia(fila, columna)) {
+	                total++;
+	            }
+	        }
+	    }
+	    return total;
+	}
+
+	
 }
 

@@ -74,4 +74,7 @@ public class Juego {
 	public Ficha getProximaFicha() {
 		return generadorFichas.getProximaFicha();
 	}
+	public Direccion sugerirMovimiento() {
+	    return SugeridorDeJugada.sugerir(tablero);
+	}
 }
