@@ -77,4 +77,7 @@ public class Juego {
 	public Direccion sugerirMovimiento() {
 	    return SugeridorDeJugada.sugerir(tablero);
 	}
+	public int obtenerValor(int fila, int columna) {
+		return tablero.obtenerValor(fila, columna);
+	}
 }

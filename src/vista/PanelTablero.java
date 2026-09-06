@@ -1,34 +1,65 @@
 package vista;
 
-import modelo.Tablero;
+import controlador.ControladorJuego;
 
-public class PanelTablero extends java.awt.Canvas {
+public class PanelTablero extends javax.swing.JPanel {
 
-    private Tablero tablero;
+    private ControladorJuego controlador;
 
-    public PanelTablero(Tablero tablero) {
-        this.tablero = tablero;
-        setBackground(new java.awt.Color(230, 220, 205));
+    public PanelTablero(ControladorJuego controlador) {
+
+        this.controlador = controlador;
+
+        setBackground(
+            new java.awt.Color(230, 220, 205)
+        );
     }
 
-    public void paint(java.awt.Graphics g) {
+    @Override
+    protected void paintComponent(java.awt.Graphics g) {
+
+        super.paintComponent(g);
+        
+        int anchoTablero = 4 * 90;
+        int altoTablero = 4 * 90;
+
+        int inicioX = (getWidth() - anchoTablero) / 2;
+        int inicioY = (getHeight() - altoTablero) / 2;
 
         for (int fila = 0; fila < 4; fila++) {
 
             for (int columna = 0; columna < 4; columna++) {
 
-                int x = columna * 90 + 10;
-                int y = fila * 90 + 10;
+            	int x = inicioX + columna * 90 + 5;
+            	int y = inicioY + fila * 90 + 5;
 
-                g.setColor(new java.awt.Color(205, 195, 180));
+                g.setColor(
+                    new java.awt.Color(205, 195, 180)
+                );
 
-                g.fillRoundRect(x, y, 80, 80, 15, 15);
+                g.fillRoundRect(
+                    x,
+                    y,
+                    80,
+                    80,
+                    15,
+                    15
+                );
 
-                int valor = tablero.obtenerValor(fila, columna);
+                int valor =
+                    controlador.obtenerValor(
+                        fila,
+                        columna
+                    );
 
                 if (valor != 0) {
 
-                    dibujarFicha(g, valor, x, y);
+                    dibujarFicha(
+                        g,
+                        valor,
+                        x,
+                        y
+                    );
                 }
             }
         }
@@ -41,24 +72,61 @@ public class PanelTablero extends java.awt.Canvas {
             int y) {
 
         if (valor == 1) {
-            g.setColor(new java.awt.Color(245, 190, 120));
+
+            g.setColor(
+                new java.awt.Color(245, 190, 120)
+            );
+
         } else if (valor == 2) {
-            g.setColor(new java.awt.Color(245, 215, 120));
+
+            g.setColor(
+                new java.awt.Color(245, 215, 120)
+            );
+
         } else if (valor == 3) {
-            g.setColor(new java.awt.Color(110, 180, 220));
+
+            g.setColor(
+                new java.awt.Color(110, 180, 220)
+            );
+
         } else {
-            g.setColor(new java.awt.Color(100, 150, 200));
+
+            g.setColor(
+                new java.awt.Color(100, 150, 200)
+            );
         }
 
-        g.fillRoundRect(x, y, 80, 80, 15, 15);
+        g.fillRoundRect(
+            x,
+            y,
+            80,
+            80,
+            15,
+            15
+        );
 
-        g.setColor(java.awt.Color.WHITE);
+        g.setColor(
+            java.awt.Color.WHITE
+        );
 
-        g.setFont(new java.awt.Font(
+        g.setFont(
+            new java.awt.Font(
                 "Arial",
                 java.awt.Font.BOLD,
-                28));
+                28
+            )
+        );
 
-        g.drawString("" + valor, x + 32, y + 50);
+        String texto = String.valueOf(valor);
+
+        java.awt.FontMetrics metricas = g.getFontMetrics();
+
+        int anchoTexto = metricas.stringWidth(texto);
+        int altoTexto = metricas.getAscent();
+
+        int textoX = x + (80 - anchoTexto) / 2;
+        int textoY = y + (80 + altoTexto) / 2 - 3;
+
+        g.drawString(texto, textoX, textoY);
     }
 }

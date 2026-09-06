@@ -170,6 +170,13 @@ public class Tablero {
 	    return total;
 	}
 
+	public int obtenerValor(int fila, int columna) {
+		if(fichas[fila][columna] == null) {
+			return 0;
+		}
+		return fichas[fila][columna].getValor();
+	}
+	
 	
 }
 
