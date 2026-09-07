@@ -223,6 +223,10 @@ public class VentanaPrincipal {
                 	
                 	if(huboMovimiento) {
                 		actualizarVista();
+                		
+                		 if(controlador.juegoTerminado()) {
+                		        panelTablero.mostrarGameOver();
+                		 }
                 	}
                 }      
             }
@@ -274,6 +278,8 @@ public class VentanaPrincipal {
 		
 		btnNuevoJuego.addActionListener(e -> {
 			controlador.reiniciarJuego();
+			
+			panelTablero.ocultarGameOver();
 			
 			valorScore.setText("0");
 			

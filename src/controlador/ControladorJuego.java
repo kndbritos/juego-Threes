@@ -9,7 +9,7 @@ public class ControladorJuego {
     private Juego juego;
     
     private int mejorPuntaje;
-
+    
     public ControladorJuego() {
         this.juego = new Juego();
         mejorPuntaje = 0;

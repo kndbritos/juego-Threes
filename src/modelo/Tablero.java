@@ -175,8 +175,6 @@ public class Tablero {
 			return 0;
 		}
 		return fichas[fila][columna].getValor();
-	}
-	
-	
+	}	
 }
 

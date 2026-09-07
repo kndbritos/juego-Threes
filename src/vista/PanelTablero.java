@@ -5,6 +5,7 @@ import controlador.ControladorJuego;
 public class PanelTablero extends javax.swing.JPanel {
 
     private ControladorJuego controlador;
+    private boolean gameOver;
 
     public PanelTablero(ControladorJuego controlador) {
 
@@ -62,6 +63,9 @@ public class PanelTablero extends javax.swing.JPanel {
                     );
                 }
             }
+        }
+        if (gameOver) {
+            dibujarGameOver(g);
         }
     }
 
@@ -128,5 +132,64 @@ public class PanelTablero extends javax.swing.JPanel {
         int textoY = y + (80 + altoTexto) / 2 - 3;
 
         g.drawString(texto, textoX, textoY);
+    }
+    
+    private void dibujarGameOver(java.awt.Graphics g) {
+
+        g.setColor(
+            new java.awt.Color(100, 100, 100, 180)
+        );
+
+        g.fillRect(
+            0,
+            0,
+            getWidth(),
+            getHeight()
+        );
+
+        g.setColor(java.awt.Color.WHITE);
+
+        g.setFont(
+            new java.awt.Font(
+                "Arial",
+                java.awt.Font.BOLD,
+                32
+            )
+        );
+
+        String texto = "GAME OVER";
+
+        java.awt.FontMetrics metricas = g.getFontMetrics();
+
+        int x = (getWidth() - metricas.stringWidth(texto)) / 2;
+        int y = getHeight() / 2 - 10;
+
+        g.drawString(texto, x, y);
+
+        g.setFont(
+            new java.awt.Font(
+                "Arial",
+                java.awt.Font.BOLD,
+                20
+            )
+        );
+
+        texto = "Score: " + controlador.getPuntaje();
+
+        metricas = g.getFontMetrics();
+
+        x = (getWidth() - metricas.stringWidth(texto)) / 2;
+        y += 35;
+
+        g.drawString(texto, x, y);
+    }
+    
+    public void mostrarGameOver() {
+        gameOver = true;
+        repaint();
+    }
+    public void ocultarGameOver() {
+        gameOver = false;
+        repaint();
     }
 }
