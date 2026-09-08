@@ -30,6 +30,8 @@ public class VentanaPrincipal {
     private JLabel valorNext;
 
     private JButton btnNuevoJuego;
+    private JButton btnSugerir;
+    private JLabel valorSugerencia;
     
     private ControladorJuego controlador;
     
@@ -84,7 +86,7 @@ public class VentanaPrincipal {
 
         crearPanelInformacion();
         crearPanelTablero();
-        crearBotonNuevoJuego();
+        crearPanelBotones();
         agregarTeclado();
 
         frame.setFocusable(true);
@@ -272,24 +274,59 @@ public class VentanaPrincipal {
         
     }
 	
-	private void crearBotonNuevoJuego() { 
-		
-		btnNuevoJuego = new JButton ("NUEVO JUEGO");
-		
-		btnNuevoJuego.addActionListener(e -> {
-			controlador.reiniciarJuego();
-			
-			panelTablero.ocultarGameOver();
-			
-			valorScore.setText("0");
-			
-			valorNext.setText(String.valueOf(controlador.getProximaFicha().getValor()));
-			
-			panelTablero.repaint();
-			
-			frame.requestFocusInWindow();
-		});
-		
-		frame.getContentPane().add(btnNuevoJuego,BorderLayout.SOUTH);
+	private void crearPanelBotones() {
+
+	    JPanel panelSur = new JPanel();
+	    panelSur.setLayout(new BorderLayout());
+
+	    valorSugerencia = new JLabel("-", SwingConstants.CENTER);
+	    panelSur.add(valorSugerencia, BorderLayout.NORTH);
+
+	    JPanel panelBotones = new JPanel();
+
+	    btnNuevoJuego = new JButton("NUEVO JUEGO");
+
+	    btnNuevoJuego.addActionListener(e -> {
+	        controlador.reiniciarJuego();
+
+	        valorScore.setText("0");
+	        valorNext.setText(String.valueOf(controlador.getProximaFicha().getValor()));
+	        valorSugerencia.setText("-");
+
+	        panelTablero.repaint();
+	        frame.requestFocusInWindow();
+	    });
+
+	    btnSugerir = new JButton("SUGERIR");
+
+	    btnSugerir.addActionListener(e -> {
+	        Direccion sugerencia = controlador.sugerirMovimiento();
+
+	        valorSugerencia.setText(
+	                sugerencia != null ? textoDireccion(sugerencia) : "SIN MOVIMIENTOS"
+	        );
+
+	        frame.requestFocusInWindow();
+	    });
+
+	    panelBotones.add(btnNuevoJuego);
+	    panelBotones.add(btnSugerir);
+
+	    panelSur.add(panelBotones, BorderLayout.SOUTH);
+
+	    frame.getContentPane().add(panelSur, BorderLayout.SOUTH);
+	}
+
+	private String textoDireccion(Direccion direccion) {
+
+	    if (direccion == Direccion.Izquierda) {
+	        return "IZQUIERDA";
+	    } else if (direccion == Direccion.Derecha) {
+	        return "DERECHA";
+	    } else if (direccion == Direccion.Arriba) {
+	        return "ARRIBA";
+	    } else {
+	        return "ABAJO";
+	    }
 	}
 }

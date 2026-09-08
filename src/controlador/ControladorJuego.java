@@ -53,4 +53,7 @@ public class ControladorJuego {
     public void reiniciarJuego() {
     	juego = new Juego();
     }
+    public Direccion sugerirMovimiento() {
+    	return juego.sugerirMovimiento();
+    }
 }
