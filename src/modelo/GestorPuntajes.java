@@ -47,4 +47,12 @@ public class GestorPuntajes {
 		}
 	}
 	
+	public int getMayorPuntaje() {
+		List<Integer> listaPuntajes = getPuntajes();
+		
+		if(listaPuntajes.isEmpty()) return 0;
+		
+		return listaPuntajes.get(0);	
+	}
+	
 }
