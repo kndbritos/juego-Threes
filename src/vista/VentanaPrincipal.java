@@ -288,7 +288,8 @@ public class VentanaPrincipal {
 
 	    btnNuevoJuego.addActionListener(e -> {
 	        controlador.reiniciarJuego();
-
+	        panelTablero.ocultarGameOver();
+	        
 	        valorScore.setText("0");
 	        valorNext.setText(String.valueOf(controlador.getProximaFicha().getValor()));
 	        valorSugerencia.setText("-");
