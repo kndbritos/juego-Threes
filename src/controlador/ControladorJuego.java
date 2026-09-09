@@ -1,17 +1,21 @@
 package controlador;
 
+import java.util.List;
+
 import modelo.Direccion;
 import modelo.Ficha;
+import modelo.GestorPuntajes;
 import modelo.Juego;
 
 public class ControladorJuego {
 
     private Juego juego;
-    
+    private GestorPuntajes gestorPuntaje;
     private int mejorPuntaje;
     
     public ControladorJuego() {
         this.juego = new Juego();
+        this.gestorPuntaje = new GestorPuntajes();
         mejorPuntaje = 0;
     }
 
@@ -33,7 +37,10 @@ public class ControladorJuego {
 		
 	}
     public int getMejorPuntaje() {
-    	return mejorPuntaje;
+    	return gestorPuntaje.getMayorPuntaje();
+    }
+    public List<Integer> getRankingPuntajes(){
+    	return gestorPuntaje.getPuntajes();
     }
 	public int getPuntaje() {
         return juego.getPuntaje();
