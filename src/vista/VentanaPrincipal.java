@@ -31,6 +31,7 @@ public class VentanaPrincipal {
 
     private JButton btnNuevoJuego;
     private JButton btnSugerir;
+    private JButton btnRanking;
     private JLabel valorSugerencia;
     
     private ControladorJuego controlador;
@@ -228,6 +229,7 @@ public class VentanaPrincipal {
                 		
                 		 if(controlador.juegoTerminado()) {
                 		        panelTablero.mostrarGameOver();
+                		        controlador.agregarPuntajeRanking();
                 		 }
                 	}
                 }      
@@ -292,6 +294,7 @@ public class VentanaPrincipal {
 	        
 	        valorScore.setText("0");
 	        valorNext.setText(String.valueOf(controlador.getProximaFicha().getValor()));
+	        valorBest.setText(String.valueOf(controlador.getMejorPuntaje()));
 	        valorSugerencia.setText("-");
 
 	        panelTablero.repaint();
@@ -309,9 +312,25 @@ public class VentanaPrincipal {
 
 	        frame.requestFocusInWindow();
 	    });
+	    
+	    btnRanking = new JButton("VER RANKING");
+	    
+	    btnRanking.addActionListener(e -> {
+
+	        VentanaRanking ventanaRanking =
+	            new VentanaRanking(
+	                frame,
+	                controlador.getRankingPuntajes()
+	            );
+
+	        ventanaRanking.setVisible(true);
+
+	        frame.requestFocusInWindow();
+	    });
 
 	    panelBotones.add(btnNuevoJuego);
 	    panelBotones.add(btnSugerir);
+	    panelBotones.add(btnRanking);
 
 	    panelSur.add(panelBotones, BorderLayout.SOUTH);
 

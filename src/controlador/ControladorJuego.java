@@ -28,7 +28,10 @@ public class ControladorJuego {
     	
     	return huboMovimiento;
     }
-
+    public void agregarPuntajeRanking() {
+    	int puntaje = juego.getPuntaje();
+    	gestorPuntaje.agregarPuntaje(puntaje);
+    }
     private void actualizarMejorPuntaje() {
 		
     	if(juego.getPuntaje() > mejorPuntaje) {
