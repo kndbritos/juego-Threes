@@ -13,32 +13,32 @@ public class GestorPuntajes {
 	private final int limiteRanking = 3;
 	
 	public List<Integer> getPuntajes(){
-		List<Integer> listaPuntajes = new ArrayList<Integer>();
+		List<Integer> puntajes = new ArrayList<Integer>();
 		
-		if(!Files.exists(rutaArchivo)) return listaPuntajes;
+		if(!Files.exists(rutaArchivo)) return puntajes;
 		
 		try {
 			List<String> lineasArchivo = Files.readAllLines(rutaArchivo);
 			for(String linea : lineasArchivo) {
-				if(!linea.trim().isEmpty()) listaPuntajes.add(Integer.parseInt(linea.trim()));
+				if(!linea.trim().isEmpty()) puntajes.add(Integer.parseInt(linea.trim()));
 			}
 		} catch (Exception e) {
 			System.err.println("Error: " + e.getMessage());
 		}
-		listaPuntajes.sort(Collections.reverseOrder());
-		return listaPuntajes;
+		puntajes.sort(Collections.reverseOrder());
+		return puntajes;
 	}
 	
 	public void agregarPuntaje(int nuevoPuntaje) {
-		List<Integer> listaPuntajes = getPuntajes();
-		listaPuntajes.add(nuevoPuntaje);
+		List<Integer> puntajes = getPuntajes();
+		puntajes.add(nuevoPuntaje);
 		
-		listaPuntajes.sort(Collections.reverseOrder());
+		puntajes.sort(Collections.reverseOrder());
 		
-		if(listaPuntajes.size() > limiteRanking) listaPuntajes = listaPuntajes.subList(0, limiteRanking);
+		if(puntajes.size() > limiteRanking) puntajes = puntajes.subList(0, limiteRanking);
 		
 		List<String> lineas = new ArrayList<String>();
-		for(Integer puntaje : listaPuntajes) lineas.add(String.valueOf(puntaje));
+		for(Integer puntaje : puntajes) lineas.add(String.valueOf(puntaje));
 		
 		try {
 			Files.write(rutaArchivo, lineas, StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
@@ -48,11 +48,11 @@ public class GestorPuntajes {
 	}
 	
 	public int getMayorPuntaje() {
-		List<Integer> listaPuntajes = getPuntajes();
+		List<Integer> puntajes = getPuntajes();
 		
-		if(listaPuntajes.isEmpty()) return 0;
+		if(puntajes.isEmpty()) return 0;
 		
-		return listaPuntajes.get(0);	
+		return puntajes.get(0);	
 	}
 	
 }
