@@ -20,333 +20,211 @@ import modelo.Direccion;
 
 public class VentanaPrincipal {
 
-    private JFrame frame;
+	private JFrame frame;
 
+	private PanelTablero panelTablero;
 
-    private PanelTablero panelTablero;
+	private JLabel valorScore;
+	private JLabel valorBest;
+	private JLabel valorNext;
+	private JLabel valorSugerencia;
 
-    private JLabel valorScore;
-    private JLabel valorBest;
-    private JLabel valorNext;
+	private JButton btnNuevoJuego;
+	private JButton btnSugerir;
+	private JButton btnRanking;
 
-    private JButton btnNuevoJuego;
-    private JButton btnSugerir;
-    private JButton btnRanking;
-    private JLabel valorSugerencia;
-    
-    private ControladorJuego controlador;
-    
-    public static void main(String[] args) {
+	private ControladorJuego controlador;
 
-        EventQueue.invokeLater(new Runnable() {
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					VentanaPrincipal window = new VentanaPrincipal();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
-            public void run() {
+	public VentanaPrincipal() {
+		controlador = new ControladorJuego();
+		initialize();
+	}
 
-                try {
+	private void initialize() {
+		frame = new JFrame();
 
-                    VentanaPrincipal window =
-                            new VentanaPrincipal();
+		frame.setBounds(100, 100, 450, 550);
+		frame.setTitle("Threes");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BorderLayout(10, 10));
 
-                    window.frame.setVisible(true);
+		crearPanelInformacion();
+		crearPanelTablero();
+		crearPanelBotones();
+		agregarTeclado();
 
-                } catch (Exception e) {
+		frame.setFocusable(true);
+	}
 
-                    e.printStackTrace();
-                }
-            }
-        });
-    }
+	private void crearPanelInformacion() {
+		JPanel panelInformacion = new JPanel();
+		panelInformacion.setLayout(new GridLayout(2, 3));
 
-    public VentanaPrincipal() {
+		panelInformacion.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        controlador = new ControladorJuego();
+		JLabel lblScore = crearTitulo("SCORE");
+		JLabel lblBest = crearTitulo("BEST");
+		JLabel lblNext = crearTitulo("NEXT");
 
-        initialize();
-    }
+		valorScore = crearValor(String.valueOf(controlador.getPuntaje()));
+		valorBest = crearValor(String.valueOf(controlador.getMejorPuntaje()));
+		valorNext = crearValor(String.valueOf(controlador.getProximaFicha().getValor()));
 
-    private void initialize() {
+		panelInformacion.add(lblScore);
+		panelInformacion.add(lblBest);
+		panelInformacion.add(lblNext);
 
-        frame = new JFrame();
+		panelInformacion.add(valorScore);
+		panelInformacion.add(valorBest);
+		panelInformacion.add(valorNext);
 
-        frame.setBounds(
-                100,
-                100,
-                450,
-                550
-        );
+		frame.getContentPane().add(panelInformacion, BorderLayout.NORTH);
+	}
 
-        frame.setTitle("Threes");
+	private JLabel crearTitulo(String texto) {
+		JLabel label = new JLabel(texto, SwingConstants.CENTER);
 
-        frame.setDefaultCloseOperation(
-                JFrame.EXIT_ON_CLOSE
-        );
+		label.setFont(new Font("Arial", Font.BOLD, 14));
 
-        frame.getContentPane().setLayout(
-                new BorderLayout(10, 10)
-        );
+		return label;
+	}
 
-        crearPanelInformacion();
-        crearPanelTablero();
-        crearPanelBotones();
-        agregarTeclado();
+	private JLabel crearValor(String texto) {
+		JLabel label = new JLabel(texto, SwingConstants.CENTER);
 
-        frame.setFocusable(true);
-    }
+		label.setFont(new Font("Arial", Font.BOLD, 20));
 
-    private void crearPanelInformacion() {
+		return label;
+	}
 
-        JPanel panelInformacion = new JPanel();
+	private void crearPanelTablero() {
+		panelTablero = new PanelTablero(controlador);
 
-        panelInformacion.setLayout(
-                new GridLayout(2, 3)
-        );
+		panelTablero.setBackground(new Color(230, 220, 205));
 
-        panelInformacion.setBorder(
-                BorderFactory.createEmptyBorder(
-                        10,
-                        10,
-                        10,
-                        10
-                )
-        );
+		frame.getContentPane().add(panelTablero, BorderLayout.CENTER);
+	}
 
-        JLabel lblScore =
-                crearTitulo("SCORE");
+	private void agregarTeclado() {
+		frame.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				Direccion direccion = obtenerDireccion(e);
 
-        JLabel lblBest =
-                crearTitulo("BEST");
+				if (direccion != null) {
+					boolean huboMovimiento = controlador.mover(direccion);
 
-        JLabel lblNext =
-                crearTitulo("NEXT");
+					if (huboMovimiento) {
+						actualizarVista();
 
-        valorScore =
-                crearValor(
-                        String.valueOf(
-                                controlador.getPuntaje()
-                        )
-                );
+						if (controlador.juegoTerminado()) {
+							panelTablero.mostrarGameOver();
+							controlador.agregarPuntajeRanking();
+						}
+					}
+				}
+			}
+		});
+	}
 
-        valorBest =
-                crearValor(
-                        String.valueOf(controlador.getMejorPuntaje()));
+	private Direccion obtenerDireccion(KeyEvent e) {
+		if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+			return Direccion.Izquierda;
+		} else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+			return Direccion.Derecha;
+		} else if (e.getKeyCode() == KeyEvent.VK_UP) {
+			return Direccion.Arriba;
+		} else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+			return Direccion.Abajo;
+		}
 
-        valorNext =
-                crearValor(
-                        String.valueOf(
-                                controlador
-                                    .getProximaFicha()
-                                    .getValor()
-                        )
-                );
-
-        panelInformacion.add(lblScore);
-        panelInformacion.add(lblBest);
-        panelInformacion.add(lblNext);
-
-        panelInformacion.add(valorScore);
-        panelInformacion.add(valorBest);
-        panelInformacion.add(valorNext);
-
-        frame.getContentPane().add(
-                panelInformacion,
-                BorderLayout.NORTH
-        );
-    }
-
-    private JLabel crearTitulo(String texto) {
-
-        JLabel label =
-                new JLabel(
-                        texto,
-                        SwingConstants.CENTER
-                );
-
-        label.setFont(
-                new Font(
-                        "Arial",
-                        Font.BOLD,
-                        14
-                )
-        );
-
-        return label;
-    }
-
-    private JLabel crearValor(String texto) {
-
-        JLabel label =
-                new JLabel(
-                        texto,
-                        SwingConstants.CENTER
-                );
-
-        label.setFont(
-                new Font(
-                        "Arial",
-                        Font.BOLD,
-                        20
-                )
-        );
-
-        return label;
-    }
-
-    private void crearPanelTablero() {
-
-        panelTablero =
-                new PanelTablero(controlador);
-
-        panelTablero.setBackground(
-                new Color(
-                        230,
-                        220,
-                        205
-                )
-        );
-
-        frame.getContentPane().add(
-                panelTablero,
-                BorderLayout.CENTER
-        );
-    }
-
-    private void agregarTeclado() {
-
-        frame.addKeyListener(
-                new KeyAdapter() {
-
-            @Override
-            public void keyPressed(
-                    KeyEvent e) {
-
-                Direccion direccion = obtenerDireccion(e);
-
-                if(direccion != null) {
-                	boolean huboMovimiento = controlador.mover(direccion);
-                	
-                	if(huboMovimiento) {
-                		actualizarVista();
-                		
-                		 if(controlador.juegoTerminado()) {
-                		        panelTablero.mostrarGameOver();
-                		        controlador.agregarPuntajeRanking();
-                		 }
-                	}
-                }      
-            }
-        });
-    }
-
-    private Direccion obtenerDireccion(KeyEvent e) {
-    	if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                return Direccion.Izquierda;
-
-        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-        		return Direccion.Derecha;
-
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-        		return Direccion.Arriba;
-
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-        		return Direccion.Abajo;
-        }
-    	
-    	return null;
+		return null;
 	}
 
 	private void actualizarVista() {
+		panelTablero.repaint();
 
-        panelTablero.repaint();
+		valorScore.setText(String.valueOf(controlador.getPuntaje()));
+		valorBest.setText(String.valueOf(controlador.getMejorPuntaje()));
+		valorNext.setText(String.valueOf(controlador.getProximaFicha().getValor()));
+	}
 
-        valorScore.setText(
-                String.valueOf(
-                        controlador.getPuntaje()
-                )
-        );
-
-        valorBest.setText(String.valueOf(controlador.getMejorPuntaje()));
-        
-        valorNext.setText(
-                String.valueOf(
-                        controlador
-                            .getProximaFicha()
-                            .getValor()
-                )
-        );
-        
-    }
-	
 	private void crearPanelBotones() {
+		JPanel panelSur = new JPanel();
+		panelSur.setLayout(new BorderLayout());
 
-	    JPanel panelSur = new JPanel();
-	    panelSur.setLayout(new BorderLayout());
+		valorSugerencia = new JLabel("-", SwingConstants.CENTER);
+		panelSur.add(valorSugerencia, BorderLayout.NORTH);
 
-	    valorSugerencia = new JLabel("-", SwingConstants.CENTER);
-	    panelSur.add(valorSugerencia, BorderLayout.NORTH);
+		JPanel panelBotones = new JPanel();
 
-	    JPanel panelBotones = new JPanel();
+		btnNuevoJuego = new JButton("NUEVO JUEGO");
 
-	    btnNuevoJuego = new JButton("NUEVO JUEGO");
+		btnNuevoJuego.addActionListener(e -> {
+			controlador.reiniciarJuego();
+			panelTablero.ocultarGameOver();
 
-	    btnNuevoJuego.addActionListener(e -> {
-	        controlador.reiniciarJuego();
-	        panelTablero.ocultarGameOver();
-	        
-	        valorScore.setText("0");
-	        valorNext.setText(String.valueOf(controlador.getProximaFicha().getValor()));
-	        valorBest.setText(String.valueOf(controlador.getMejorPuntaje()));
-	        valorSugerencia.setText("-");
+			valorScore.setText("0");
+			valorNext.setText(String.valueOf(controlador.getProximaFicha().getValor()));
+			valorBest.setText(String.valueOf(controlador.getMejorPuntaje()));
+			valorSugerencia.setText("-");
 
-	        panelTablero.repaint();
-	        frame.requestFocusInWindow();
-	    });
+			panelTablero.repaint();
 
-	    btnSugerir = new JButton("SUGERIR");
+			frame.requestFocusInWindow();
+		});
 
-	    btnSugerir.addActionListener(e -> {
-	        Direccion sugerencia = controlador.sugerirMovimiento();
+		btnSugerir = new JButton("SUGERIR");
 
-	        valorSugerencia.setText(
-	                sugerencia != null ? textoDireccion(sugerencia) : "SIN MOVIMIENTOS"
-	        );
+		btnSugerir.addActionListener(e -> {
+			Direccion sugerencia = controlador.sugerirMovimiento();
 
-	        frame.requestFocusInWindow();
-	    });
-	    
-	    btnRanking = new JButton("VER RANKING");
-	    
-	    btnRanking.addActionListener(e -> {
+			valorSugerencia.setText(sugerencia != null ? textoDireccion(sugerencia) : "SIN MOVIMIENTOS");
 
-	        VentanaRanking ventanaRanking =
-	            new VentanaRanking(
-	                frame,
-	                controlador.getRankingPuntajes()
-	            );
+			frame.requestFocusInWindow();
+		});
 
-	        ventanaRanking.setVisible(true);
+		btnRanking = new JButton("VER RANKING");
 
-	        frame.requestFocusInWindow();
-	    });
+		btnRanking.addActionListener(e -> {
+			VentanaRanking ventanaRanking = new VentanaRanking(frame, controlador.getRankingPuntajes());
 
-	    panelBotones.add(btnNuevoJuego);
-	    panelBotones.add(btnSugerir);
-	    panelBotones.add(btnRanking);
+			ventanaRanking.setVisible(true);
 
-	    panelSur.add(panelBotones, BorderLayout.SOUTH);
+			frame.requestFocusInWindow();
+		});
 
-	    frame.getContentPane().add(panelSur, BorderLayout.SOUTH);
+		panelBotones.add(btnNuevoJuego);
+		panelBotones.add(btnSugerir);
+		panelBotones.add(btnRanking);
+
+		panelSur.add(panelBotones, BorderLayout.SOUTH);
+
+		frame.getContentPane().add(panelSur, BorderLayout.SOUTH);
 	}
 
 	private String textoDireccion(Direccion direccion) {
-
-	    if (direccion == Direccion.Izquierda) {
-	        return "IZQUIERDA";
-	    } else if (direccion == Direccion.Derecha) {
-	        return "DERECHA";
-	    } else if (direccion == Direccion.Arriba) {
-	        return "ARRIBA";
-	    } else {
-	        return "ABAJO";
-	    }
+		if (direccion == Direccion.Izquierda) {
+			return "IZQUIERDA";
+		} else if (direccion == Direccion.Derecha) {
+			return "DERECHA";
+		} else if (direccion == Direccion.Arriba) {
+			return "ARRIBA";
+		} else {
+			return "ABAJO";
+		}
 	}
 }
